@@ -1,5 +1,5 @@
 /**
-The MySensors Arduino library handles the wireless radio link and protocol
+   The MySensors Arduino library handles the wireless radio link and protocol
    between your home built sensors/actuators and HA controller of choice.
    The sensors forms a self healing radio network with optional repeaters. Each
    repeater and gateway builds a routing tables in EEPROM which keeps track of the
@@ -48,17 +48,16 @@ The MySensors Arduino library handles the wireless radio link and protocol
 #define BUTTON2_PIN  3  // Arduino Digital I/O pin number for "acionamento do trinco" 
 #define CHILD_ID1 1   // Id of the sensor child "relay acionamento abertura fecho portão"
 #define CHILD_ID2 2   // Id of the sensor child "estado do portão"
-#define CHILD_ID2 3   // Id of the sensor child "acionamento trinco"
 #define RELAY_ON 1
 #define RELAY_OFF 0
 
 Bounce debouncer1 = Bounce();
 Bounce debouncer2 = Bounce();
-int oldValue1 = 0;
-int oldValue2 = 0;
+int oldValue1 = -1;
+int oldValue2 = -1;
+int value1 = -1;
 bool state1;              // Acionamento portão
 bool state2;              // Estado portão
-bool state3;              // Acionamento trinco
 
 MyMessage msg1(CHILD_ID1, V_LIGHT);
 MyMessage msg2(CHILD_ID2, V_STATUS);
@@ -88,9 +87,6 @@ void setup()
   // Set relay to last known state (using eeprom storage)
   state1 = loadState(CHILD_ID1);                              // Acionamento abertura fecho portão
   digitalWrite(RELAY1_PIN, state1 ? RELAY_ON : RELAY_OFF);
-  state2 = loadState(CHILD_ID2);                              // Estado do portão
-  //  digitalWrite(RELAY2_PIN, state2 ? RELAY_ON : RELAY_OFF);
-  state3 = loadState(CHILD_ID3);
 }
 
 void presentation()  {
@@ -98,30 +94,31 @@ void presentation()  {
   sendSketchInfo("Controlo portão", "1.0");
 
   // Register all sensors to gw (they will be created as child devices)
-  present(CHILD_ID1, S_LIGHT);
+  present(CHILD_ID1, S_DOOR);
   present(CHILD_ID2, S_BINARY);
 }
 
-/*
-   Example on how to asynchronously check for new messages from gw
-*/
 void loop()
 {
   debouncer1.update();
   debouncer2.update();
   // Get the update value
   int value = debouncer1.read();                  // Estado do portão (magnetic Switch portão)
-  if (value != oldValue1 && value == 0) {
-    send(msg2.set(state1 ? false : true), true);  // Send new state and request ack back
-    Serial.print("Portão aberto/fechado");
+  if (value != oldValue1) {
+    send(msg2.set(value == HIGH ? 1 : 0)); // Send new state and request ack back
+    Serial.print("Magnetic Switch portão");
   }
   oldValue1 = value;
-  value = debouncer2.read();                      // Acionamento do trinco (estado do relé de sinalização)
-  if (value != oldValue2 && value == 0) {
-    //send(msg2.set(state2 ? false : true), true); // Send new state and request ack back
+  int value_1 = debouncer2.read();                      // Acionamento do trinco (estado do relé de sinalização)
+  if (value_1 != oldValue2 ) {
     digitalWrite(RELAY2_PIN, RELAY_ON);
-    //saveState(CHILD_ID2, state1);
-    Serial.print("Trinco aberto/fechado");
+    Serial.print("Trinco aberto ");
+    value1 == -1;
+  }
+  else if (value_1 == oldValue2 && value1 == -1) {
+    digitalWrite(RELAY2_PIN, RELAY_OFF);
+    Serial.print("Trinco fechado ");
+    value1 == 0;
   }
   oldValue2 = value;
 }
@@ -131,17 +128,12 @@ void receive(const MyMessage &message) {
   if (message.isAck()) {
     Serial.println("This is an ack from gateway");
   }
-
-  if (message.type == V_LIGHT) {
+  if (message.type == V_LIGHT || message.type == V_STATUS) {
     // Change relay state
     state1 = message.getBool();
     digitalWrite(RELAY1_PIN, state1 ? RELAY_ON : RELAY_OFF);
     // Store state in eeprom
     saveState(CHILD_ID1, state1);
-    //    state2 = message.getBool();
-    //    digitalWrite(RELAY2_PIN, state2 ? RELAY_ON : RELAY_OFF);
-    //    saveState(CHILD_ID2, state1);
-
     // Write some debug info
     Serial.print("Incoming change for sensor:");
     Serial.print(message.sensor);
