@@ -66,7 +66,6 @@ void setup()
   Serial.begin(115200);
   emon1.current(ANALOG_INPUT_CURRENT_SENSOR, 28.51);             // Current: input pin, calibration.
   emon1.voltage(ANALOG_INPUT_VOLTAGE_SENSOR, 295.6, 1.7);        // Voltage: input pin, calibration, phase_shift
-  //  double Irms = emon1.calcIrms(1480);  // initial boot to charge up capacitor (no reading is taken) - testing
   request(CHILD_ID_PWR, V_VAR1);
   //end of energy clamp code
 }
@@ -83,9 +82,6 @@ void loop()
   if (minutes < 60)                                    // power used each minute
   {
     emon1.calcVI(20, 2000);                            // Calculate all. No.of half wavelengths (crossings), time-out
-    //    double Irms = emon1.calcIrms(1480);  // Calculate Irms only
-    //    if (Irms < 0.3) Irms = 0;
-    //    long Irms = emon1.Irms;
     long watt = emon1.apparentPower;
     wattsumme = wattsumme + watt;
     minutes++;
@@ -133,7 +129,6 @@ void receive(const MyMessage &message) {
     wh = kwh * 1000;
     Serial.print("Received last KWH from gw:");
     Serial.println(kwh);
-    //send(kwhMsg.set(kwh, 3)); // Send kwh value to gw
     KWH_received = true;
   }
 }
