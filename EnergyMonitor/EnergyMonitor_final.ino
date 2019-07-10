@@ -4,26 +4,19 @@
    The sensors forms a self healing radio network with optional repeaters. Each
    repeater and gateway builds a routing tables in EEPROM which keeps track of the
    network topology allowing messages to be routed to nodes.
-
    Created by Henrik Ekblad <henrik.ekblad@mysensors.org>
    Copyright (C) 2013-2015 Sensnology AB
    Full contributor list: https://github.com/mysensors/Arduino/graphs/contributors
-
    Documentation: http://www.mysensors.org
    Support Forum: http://forum.mysensors.org
-
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    version 2 as published by the Free Software Foundation.
-
  *******************************
-
    EnergyMeterSCT by Patrick Schaerer
    This Sketch is a WattMeter used with a SCT-013-030 non invasive PowerMeter
    see documentation for schematic
-
    Special thanks to Surge, who optimized my code.
-
    updated to mySensors Library 2.0
 */
 
@@ -50,7 +43,9 @@ MyMessage Watt_Msg(CHILD_ID_PWR, V_WATT);        //Real Power
 MyMessage VAr_Msg(CHILD_ID_PWR, V_VAR);          //Reactive Power
 MyMessage PF_Msg(CHILD_ID_PWR, V_POWER_FACTOR);  //Power factor
 MyMessage Vrms_Msg(CHILD_ID_PWR, V_VOLTAGE);     //Vrms
+MyMessage Vrms1_Msg(CHILD_ID_PWR, V_VAR2);       //Vrms
 MyMessage Irms_Msg(CHILD_ID_PWR, V_CURRENT);     //Irms
+MyMessage Irms1_Msg(CHILD_ID_PWR, V_VAR3);       //Irms
 MyMessage msgKWH(CHILD_ID_PWR, V_VAR1);
 unsigned long SLEEP_TIME = 60000 - 3735;        // sleep for 60 seconds (-4 seconds to calculate values)
 
@@ -93,7 +88,9 @@ void loop()
     send(Watt_Msg.set(realPower));           // Send real power value to gw
     send(PF_Msg.set(powerFActor, 2));        // Send Power Factor value to gw
     send(Vrms_Msg.set(supplyVoltage));       // Send Vrms value to gw
+    send(Vrms1_Msg.set(supplyVoltage));      // Send Vrms value to gw
     send(Irms_Msg.set(Irms, 2));             // Send Irms value to gw
+    send(Irms1_Msg.set(Irms, 2));            // Send Irms value to gw
     Serial.print(supplyVoltage);       // Apparent power
     Serial.print("V ");
     Serial.print(Irms);                // Apparent power
