@@ -40,12 +40,12 @@ EnergyMonitor emon1;
 MyMessage VA_Msg(CHILD_ID_PWR, V_VA);            //Aparent Power
 MyMessage Kwh_Msg(CHILD_ID_PWR, V_KWH);          //Energy
 MyMessage Watt_Msg(CHILD_ID_PWR, V_WATT);        //Real Power
-MyMessage VAr_Msg(CHILD_ID_PWR, V_VAR);          //Reactive Power
+MyMessage VAr_Msg(CHILD_ID_PWR, V_VAR);          //Reactive Power (Domoticz)
 MyMessage PF_Msg(CHILD_ID_PWR, V_POWER_FACTOR);  //Power factor
-MyMessage Vrms_Msg(CHILD_ID_PWR, V_VOLTAGE);     //Vrms
-MyMessage Vrms1_Msg(CHILD_ID_PWR, V_VAR2);       //Vrms
-MyMessage Irms_Msg(CHILD_ID_PWR, V_CURRENT);     //Irms
-MyMessage Irms1_Msg(CHILD_ID_PWR, V_VAR3);       //Irms
+MyMessage Vrms_Msg(CHILD_ID_PWR, V_VOLTAGE);     //Vrms (Domoticz)
+MyMessage Vrms1_Msg(CHILD_ID_PWR, V_VAR2);       //Vrms (OpenHab)
+MyMessage Irms_Msg(CHILD_ID_PWR, V_CURRENT);     //Irms (Domoticz)
+MyMessage Irms1_Msg(CHILD_ID_PWR, V_VAR3);       //Irms (OpenHab)
 MyMessage msgKWH(CHILD_ID_PWR, V_VAR1);
 unsigned long SLEEP_TIME = 60000 - 3735;        // sleep for 60 seconds (-4 seconds to calculate values)
 
