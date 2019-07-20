@@ -5,10 +5,6 @@
    Sketch para controlo de garagem, monitoriza o estado do portão,
    abertura e fecho remotamente, iluminação (Domoticz)
    This node also works as a repeader for other nodes
-   Pino2 - estado do portão (Magnetic Switch)
-   Pino3 - acionamento do trinco (relé de sinalização do portão)
-   Pino4 - relé acionamento abertura fecho portão
-   Pino5 - relé acionamento do trinco
 */
 
 // Enable debug prints to serial monitor
@@ -24,12 +20,12 @@
 #include <Bounce2.h>
 #include <SPI.h>
 
-#define RELAY1_PIN  4  // Arduino Digital I/O pin number for "relé acionamento abertura fecho portão"
-#define RELAY2_PIN  5  // Arduino Digital I/O pin number for "relé acionamento iluminação"
-#define RELAY3_PIN  6  // Arduino Digital I/O pin number for "relé acionamento aux"
-#define BUTTON1_PIN  2  // Arduino Digital I/O pin number for "botão acionamento abertura fecho portão" 
-#define BUTTON2_PIN  3  // Arduino Digital I/O pin number for "micro switch estado do portão"
-#define BUTTON3_PIN  1  // Arduino Digital I/O pin number for "botão acionament iluminação"
+#define RELAY1_PIN  6  // Arduino Digital I/O pin number for "relé acionamento abertura fecho portão"
+#define RELAY2_PIN  7  // Arduino Digital I/O pin number for "relé acionamento iluminação"
+#define RELAY3_PIN  8  // Arduino Digital I/O pin number for "relé acionamento aux"
+#define BUTTON1_PIN  4  // Arduino Digital I/O pin number for "botão acionamento abertura fecho portão" 
+#define BUTTON2_PIN  5  // Arduino Digital I/O pin number for "micro switch estado do portão"
+#define BUTTON3_PIN  3  // Arduino Digital I/O pin number for "botão acionament iluminação"
 
 #define CHILD_ID1 50    // Id of the sensor child "acionamento abertura fecho portão"
 #define CHILD_ID2 51    // Id of the sensor child "estado do portão"
