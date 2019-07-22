@@ -96,10 +96,10 @@ void presentation()
   // Send the sketch version information to the gateway and Controller
   sendSketchInfo("Controlo garagem", "1.0");
   // Register all sensors to gw (they will be created as child devices)
-  present(CHILD_ID1, S_DOOR);
-  present(CHILD_ID2, S_BINARY);
-  present(CHILD_ID3, S_DOOR);
-  present(CHILD_ID4, S_DOOR);
+  present(CHILD_ID1, S_BINARY);
+  present(CHILD_ID2, S_DOOR);
+  present(CHILD_ID3, S_BINARY);
+  present(CHILD_ID4, S_BINARY);
 }
 
 void loop()
