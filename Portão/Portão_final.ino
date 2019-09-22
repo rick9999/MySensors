@@ -1,7 +1,6 @@
 /**
    REVISION HISTORY
    Version 1.0 - Ricardo Lourenço
-
    DESCRIPTION
    Sketch para controlo de portão, monitoriza o estado do portão,
    trinco automático, abertura e fecho remotamente (Domoticz) 
@@ -44,7 +43,7 @@ bool state1;            // Acionamento portão
 bool state2;            // Estado portão
 
 MyMessage msg1(CHILD_ID1, V_LIGHT);
-MyMessage msg2(CHILD_ID2, V_STATUS);
+MyMessage msg2(CHILD_ID2, V_TRIPPED);
 
 void setup()
 {
@@ -75,8 +74,8 @@ void presentation()  {
   // Send the sketch version information to the gateway and Controller
   sendSketchInfo("Controlo portão", "1.0");                  
   // Register all sensors to gw (they will be created as child devices)
-  present(CHILD_ID1, S_DOOR);                                
-  present(CHILD_ID2, S_BINARY);
+  present(CHILD_ID1, S_LIGHT);                                
+  present(CHILD_ID2, S_DOOR);
 }
 
 void loop()
@@ -109,7 +108,7 @@ void receive(const MyMessage &message) {
   if (message.isAck()) {
     Serial.println("This is an ack from gateway");
   }
-  if (message.type == V_LIGHT || message.type == V_STATUS) {
+  if (message.type == V_LIGHT ) {
     // Change relay state
     state1 = message.getBool();
     digitalWrite(RELAY1_PIN, state1 ? RELAY_ON : RELAY_OFF);
