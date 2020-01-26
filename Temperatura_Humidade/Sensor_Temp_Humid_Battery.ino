@@ -21,12 +21,13 @@
 
 #define DHT_DATA_PIN 3  // Set this to the pin you connected the DHT's data pin to.
 #define SENSOR_TEMP_OFFSET 0  // Set this offset if the sensor has a permanent small offset to the real temperatures.
+#define SENSOR_HUM_OFFSET -20   // Set this offset if the sensor has a permanent small offset to the real humidity.
 #define CHILD_ID_HUM 0
 #define CHILD_ID_TEMP 1
 
 // Sleep time between sensor updates (in milliseconds)
 // Must be >1000ms for DHT22 and >2000ms for DHT11
-static const uint64_t UPDATE_INTERVAL = 300000;
+static const uint64_t UPDATE_INTERVAL = 3000;
 
 // Force sending an update of the temperature after n sensor reads, so a controller showing the
 // timestamp of the last update doesn't show something like 3 hours in the unlikely case, that
@@ -54,7 +55,7 @@ int oldBatteryPcnt = 0;
 void presentation()  
 { 
   // Send the sketch version information to the gateway
-  sendSketchInfo("TempHumExterior_BatMeter", "1.1");
+  sendSketchInfo("TempHum_BatMeter_2", "1.1");
 
   // Register all sensors to gw (they will be created as child devices)
   present(CHILD_ID_HUM, S_HUM);
@@ -119,6 +120,8 @@ void loop()
   } else if (humidity != lastHum || nNoUpdatesHum == FORCE_UPDATE_N_READS) {
     // Only send humidity if it changed since the last measurement or if we didn't send an update for n times
     lastHum = humidity;
+    // apply the offset
+    humidity += SENSOR_HUM_OFFSET;
     // Reset no updates counter
     nNoUpdatesHum = 0;
     send(msgHum.set(humidity, 1));
@@ -142,7 +145,7 @@ void loop()
     // Sense point is bypassed with 0.1 uF cap to reduce noise at that point
     // ((1e6+472e3)/472e3)*1.1 = Vmax = 3.43 Volts
     // 3.43/1023 = Volts per bit = 0.00335338072
-    float Vbat  = sensorValue * 0.003363075;
+    float Vbat  = sensorValue * 0.0036870952;
     int batteryPcnt = static_cast<int>(((Vbat-VMIN)/(VMAX-VMIN))*100.);  
 
     #ifdef MY_DEBUG
