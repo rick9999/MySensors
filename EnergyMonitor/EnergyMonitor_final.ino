@@ -30,8 +30,8 @@
 #include <MySensors.h>
 #include <EmonLib.h>
 
-#define ANALOG_INPUT_CURRENT_SENSOR 1       // The analogic input you attached your current sensor.  (Only 2 and 3 generates interrupt!)
-#define ANALOG_INPUT_VOLTAGE_SENSOR 2       // The analogic input you attached your voltage sensor.
+#define ANALOG_INPUT_CURRENT_SENSOR 6       // The analogic input you attached your current sensor.  (Only 2 and 3 generates interrupt!)
+#define ANALOG_INPUT_VOLTAGE_SENSOR 7       // The analogic input you attached your voltage sensor.
 //#define INTERRUPT DIGITAL_INPUT_SENSOR-2  // Usually the interrupt = pin -2 (on uno/nano anyway)
 #define CHILD_ID_PWR 1                      // Id of the sensor child
 
@@ -59,8 +59,8 @@ void setup()
 {
   //energy clamp code
   Serial.begin(115200);
-  emon1.current(ANALOG_INPUT_CURRENT_SENSOR, 19.5);             // Current: input pin, calibration.
-  emon1.voltage(ANALOG_INPUT_VOLTAGE_SENSOR, 248, 1.7);        // Voltage: input pin, calibration, phase_shift
+  emon1.current(ANALOG_INPUT_CURRENT_SENSOR, 28.51);             // Current: input pin, calibration.
+  emon1.voltage(ANALOG_INPUT_VOLTAGE_SENSOR, 295.6, 1.7);        // Voltage: input pin, calibration, phase_shift
   request(CHILD_ID_PWR, V_VAR1);
   //end of energy clamp code
 }
