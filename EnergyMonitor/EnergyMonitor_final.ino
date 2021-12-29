@@ -30,8 +30,8 @@
 #include <MySensors.h>
 #include <EmonLib.h>
 
-#define ANALOG_INPUT_CURRENT_SENSOR 6       // The analogic input you attached your current sensor.  (Only 2 and 3 generates interrupt!)
-#define ANALOG_INPUT_VOLTAGE_SENSOR 7       // The analogic input you attached your voltage sensor.
+#define ANALOG_INPUT_CURRENT_SENSOR 7       // The analogic input you attached your current sensor.  (Only 2 and 3 generates interrupt!)
+#define ANALOG_INPUT_VOLTAGE_SENSOR 6       // The analogic input you attached your voltage sensor.
 //#define INTERRUPT DIGITAL_INPUT_SENSOR-2  // Usually the interrupt = pin -2 (on uno/nano anyway)
 #define CHILD_ID_PWR 1                      // Id of the sensor child
 
