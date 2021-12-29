@@ -30,8 +30,8 @@
 #include <MySensors.h>
 #include <EmonLib.h>
 
-#define ANALOG_INPUT_CURRENT_SENSOR 7       // The analogic input you attached your current sensor.  (Only 2 and 3 generates interrupt!)
-#define ANALOG_INPUT_VOLTAGE_SENSOR 6       // The analogic input you attached your voltage sensor.
+#define ANALOG_INPUT_CURRENT_SENSOR 1       // The analogic input you attached your current sensor.  (Only 2 and 3 generates interrupt!)
+#define ANALOG_INPUT_VOLTAGE_SENSOR 2       // The analogic input you attached your voltage sensor.
 //#define INTERRUPT DIGITAL_INPUT_SENSOR-2  // Usually the interrupt = pin -2 (on uno/nano anyway)
 #define CHILD_ID_PWR 1                      // Id of the sensor child
 
@@ -40,11 +40,11 @@ EnergyMonitor emon1;
 MyMessage VA_Msg(CHILD_ID_PWR, V_VA);            //Aparent Power
 MyMessage Kwh_Msg(CHILD_ID_PWR, V_KWH);          //Energy
 MyMessage Watt_Msg(CHILD_ID_PWR, V_WATT);        //Real Power
-MyMessage VAr_Msg(CHILD_ID_PWR, V_VAR);          //Reactive Power (Domoticz)
+//MyMessage VAr_Msg(CHILD_ID_PWR, V_VAR);          //Reactive Power (Domoticz)
 MyMessage PF_Msg(CHILD_ID_PWR, V_POWER_FACTOR);  //Power factor
-MyMessage Vrms_Msg(CHILD_ID_PWR, V_VOLTAGE);     //Vrms (Domoticz)
+//MyMessage Vrms_Msg(CHILD_ID_PWR, V_VOLTAGE);     //Vrms (Domoticz)
 MyMessage Vrms1_Msg(CHILD_ID_PWR, V_VAR2);       //Vrms (OpenHab)
-MyMessage Irms_Msg(CHILD_ID_PWR, V_CURRENT);     //Irms (Domoticz)
+//MyMessage Irms_Msg(CHILD_ID_PWR, V_CURRENT);     //Irms (Domoticz)
 MyMessage Irms1_Msg(CHILD_ID_PWR, V_VAR3);       //Irms (OpenHab)
 MyMessage msgKWH(CHILD_ID_PWR, V_VAR1);
 unsigned long SLEEP_TIME = 60000 - 3735;        // sleep for 60 seconds (-4 seconds to calculate values)
@@ -59,8 +59,8 @@ void setup()
 {
   //energy clamp code
   Serial.begin(115200);
-  emon1.current(ANALOG_INPUT_CURRENT_SENSOR, 28.51);             // Current: input pin, calibration.
-  emon1.voltage(ANALOG_INPUT_VOLTAGE_SENSOR, 295.6, 1.7);        // Voltage: input pin, calibration, phase_shift
+  emon1.current(ANALOG_INPUT_CURRENT_SENSOR, 19.5);             // Current: input pin, calibration.
+  emon1.voltage(ANALOG_INPUT_VOLTAGE_SENSOR, 248, 1.7);        // Voltage: input pin, calibration, phase_shift
   request(CHILD_ID_PWR, V_VAR1);
   //end of energy clamp code
 }
@@ -87,9 +87,9 @@ void loop()
     send(VA_Msg.set(watt));                  // Send aparent power value to gw
     send(Watt_Msg.set(realPower));           // Send real power value to gw
     send(PF_Msg.set(powerFActor, 2));        // Send Power Factor value to gw
-    send(Vrms_Msg.set(supplyVoltage));       // Send Vrms value to gw
+    //send(Vrms_Msg.set(supplyVoltage));       // Send Vrms value to gw
     send(Vrms1_Msg.set(supplyVoltage));      // Send Vrms value to gw
-    send(Irms_Msg.set(Irms, 2));             // Send Irms value to gw
+    //send(Irms_Msg.set(Irms, 2));             // Send Irms value to gw
     send(Irms1_Msg.set(Irms, 2));            // Send Irms value to gw
     Serial.print(supplyVoltage);       // Apparent power
     Serial.print("V ");
